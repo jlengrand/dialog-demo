@@ -11,6 +11,8 @@
     "start": "web-dev-server"
   },
   "dependencies": {
+    "@vaadin/dialog": "^23.1.4",
+    "@vaadin/text-field": "^23.1.4",
     "lit": "^2.0.2"
   },
   "devDependencies": {

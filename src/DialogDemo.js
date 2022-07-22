@@ -1,11 +1,14 @@
 import { LitElement, html, css } from 'lit';
-
-const logo = new URL('../assets/open-wc-logo.svg', import.meta.url).href;
+import '@vaadin/text-field';
+import '@vaadin/dialog';
+import {dialogRenderer} from "@vaadin/dialog/lit";
 
 export class DialogDemo extends LitElement {
   static get properties() {
     return {
       title: { type: String },
+      username: { type: String },
+      signUpOpened: { type: Boolean },
     };
   }
 
@@ -29,62 +32,43 @@ export class DialogDemo extends LitElement {
         flex-grow: 1;
       }
 
-      .logo {
-        margin-top: 36px;
-        animation: app-logo-spin infinite 20s linear;
-      }
-
-      @keyframes app-logo-spin {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .app-footer {
-        font-size: calc(12px + 0.5vmin);
-        align-items: center;
-      }
-
-      .app-footer a {
-        margin-left: 5px;
-      }
     `;
   }
 
   constructor() {
     super();
     this.title = 'My app';
+    this.signUpOpened = true;
+    this.username = "Bob";
+  }
+
+  signUpRenderer() {
+    return html`
+        <vaadin-text-field value="${this.username}" @change="${(e) => {
+          this.username = e.target.value
+        }}" label="email"></vaadin-text-field>
+
+        <vaadin-text-field value="${this.username}" }}" label="email-copy"></vaadin-text-field>
+        <p>${this.username}</p>
+
+    `;
   }
 
   render() {
     return html`
       <main>
-        <div class="logo"><img alt="open-wc logo" src=${logo} /></div>
         <h1>${this.title}</h1>
 
-        <p>Edit <code>src/DialogDemo.js</code> and save to reload.</p>
-        <a
-          class="app-link"
-          href="https://open-wc.org/guides/developing-components/code-examples/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Code examples
-        </a>
+        <vaadin-dialog
+          header-title="SignUp"
+          .opened="${this.signUpOpened}"
+          @opened-changed="${e => (this.signUpOpened = e.detail.value)}"
+          ${dialogRenderer(this.signUpRenderer)}
+          id="signUp">
+
+        </vaadin-dialog>
       </main>
 
-      <p class="app-footer">
-        🚽 Made with love by
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/open-wc"
-          >open-wc</a
-        >.
-      </p>
     `;
   }
 }
